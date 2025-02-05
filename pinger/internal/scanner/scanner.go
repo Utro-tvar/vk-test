@@ -28,7 +28,7 @@ func New(logger *slog.Logger) (*Scanner, error) {
 func (s *Scanner) Scan() []net.IP {
 	const op = "scanner.Scan"
 
-	containers, err := s.Client.ContainerList(context.Background(), container.ListOptions{All: true})
+	containers, err := s.Client.ContainerList(context.Background(), container.ListOptions{})
 	if err != nil {
 		s.Logger.Error(fmt.Sprintf("%s: Error while fetching containers: %w", op, err))
 		return nil
