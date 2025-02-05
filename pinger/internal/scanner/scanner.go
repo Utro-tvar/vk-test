@@ -11,8 +11,8 @@ import (
 )
 
 type Scanner struct {
-	Client *client.Client
-	Logger *slog.Logger
+	client *client.Client
+	logger *slog.Logger
 }
 
 func New(logger *slog.Logger) (*Scanner, error) {
@@ -22,15 +22,15 @@ func New(logger *slog.Logger) (*Scanner, error) {
 	if err != nil {
 		return nil, fmt.Errorf("%s: Error while creating docker api client: %w", op, err)
 	}
-	return &Scanner{Client: client, Logger: logger}, nil
+	return &Scanner{client: client, logger: logger}, nil
 }
 
 func (s *Scanner) Scan() []net.IP {
 	const op = "scanner.Scan"
 
-	containers, err := s.Client.ContainerList(context.Background(), container.ListOptions{})
+	containers, err := s.client.ContainerList(context.Background(), container.ListOptions{})
 	if err != nil {
-		s.Logger.Error(fmt.Sprintf("%s: Error while fetching containers: %w", op, err))
+		s.logger.Error(fmt.Sprintf("%s: Error while fetching containers: %w", op, err))
 		return nil
 	}
 
@@ -40,7 +40,7 @@ func (s *Scanner) Scan() []net.IP {
 		for netName, network := range cont.NetworkSettings.Networks {
 			ip := net.ParseIP(network.IPAddress)
 			if ip == nil {
-				s.Logger.Error(fmt.Sprintf("%s: Cannot parse ip: %s (network: %s, container: %s)", op, network.IPAddress, netName, cont.ID))
+				s.logger.Error(fmt.Sprintf("%s: Cannot parse ip: %s (network: %s, container: %s)", op, network.IPAddress, netName, cont.ID))
 				continue
 			}
 
