@@ -1,0 +1,58 @@
+openapi: 3.0.0
+info:
+  title: Backend
+  version: 1.0.0
+
+paths:
+  /update:
+    post:
+      summary: Send ping data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  address:
+                    type: string
+                    format: ipv4
+                    example: 0.0.0.0
+                  ping:
+                    type: integer
+                    format: int32
+                    example: 43
+      responses:
+        '200':
+          description: Info written successfuly
+        '400':
+          description: Invalid data
+  /read:
+    get:
+      summary: Get ping data
+      responses:
+        '200':
+          description: Success
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    address:
+                      type: string
+                      format: ipv4
+                      example: 0.0.0.0
+                    ping:
+                      type: integer
+                      format: int32
+                      example: 43
+                    last_conn:
+                      type: string
+                      description: Date of last successful ping
+                      format: date
+                      example: 2025-02-05
+            
