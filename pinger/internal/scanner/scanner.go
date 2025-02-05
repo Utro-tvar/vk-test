@@ -30,7 +30,7 @@ func (s *Scanner) Scan() []net.IP {
 
 	containers, err := s.client.ContainerList(context.Background(), container.ListOptions{})
 	if err != nil {
-		s.logger.Error(fmt.Sprintf("%s: Error while fetching containers: %w", op, err))
+		s.logger.Error(fmt.Sprintf("%s: Error while fetching containers", op), slog.Any("error", err))
 		return nil
 	}
 
