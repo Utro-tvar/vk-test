@@ -16,7 +16,7 @@ paths:
               items:
                 type: object
                 properties:
-                  address:
+                  ip:
                     type: string
                     format: ipv4
                     example: 0.0.0.0
@@ -42,7 +42,7 @@ paths:
                 items:
                   type: object
                   properties:
-                    address:
+                    ip:
                       type: string
                       format: ipv4
                       example: 0.0.0.0
