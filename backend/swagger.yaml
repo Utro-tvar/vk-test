@@ -55,4 +55,6 @@ paths:
                       description: Date of last successful ping
                       format: date
                       example: 2025-02-05
+        '500':
+          description: Error while getting data about containers
             
