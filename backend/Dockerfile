@@ -24,4 +24,6 @@ WORKDIR /app
 
 COPY --from=builder /app/service /app/service
 
+EXPOSE 80
+
 CMD ["./service"]
