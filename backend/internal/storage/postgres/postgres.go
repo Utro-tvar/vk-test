@@ -34,16 +34,16 @@ func (s *Storage) Store(data []models.Container) error {
 	args := make([]string, 0, len(data)*3)
 
 	for _, v := range data {
-		args = append(args, fmt.Sprintf("($%s, $%d, $%s)", v.IP.String(), v.Ping, v.LastConnection.Format("2006-01-02")))
+		args = append(args, fmt.Sprintf("('%s', %d, '%s')", v.IP.String(), v.Ping, v.LastConnection.Format("2006-01-02")))
 	}
 
 	query := fmt.Sprintf(`
-		INSERT INTO containers (ip, ping, date)
+		INSERT INTO containers (ip, ping, last_conn)
 		VALUES %s
 		ON CONFLICT (ip) DO UPDATE
 		SET 
-			ping = EXCLUDED.ping
-			date = EXCLUDED.date;
+			ping = EXCLUDED.ping,
+			last_conn = EXCLUDED.last_conn;
 	`, strings.Join(args, ", "))
 
 	_, err := s.db.Exec(query)
@@ -57,7 +57,7 @@ func (s *Storage) Store(data []models.Container) error {
 func (s *Storage) GetAll() ([]models.Container, error) {
 	const op = "storage.postgres.GetAll"
 
-	rows, err := s.db.Query("SELECT ip, ping, date FROM containers")
+	rows, err := s.db.Query("SELECT ip, ping, last_conn FROM containers")
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
