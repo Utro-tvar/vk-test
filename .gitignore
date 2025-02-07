@@ -22,3 +22,6 @@ go.work
 go.work.sum
 
 .vscode
+
+# react
+/frontend/node_modules
