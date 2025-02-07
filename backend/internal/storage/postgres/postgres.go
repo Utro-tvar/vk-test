@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"strings"
+	"time"
 
 	"github.com/Utro-tvar/vk-test/backend/internal/models"
 	_ "github.com/lib/pq"
@@ -34,7 +35,7 @@ func (s *Storage) Store(data []models.Container) error {
 	args := make([]string, 0, len(data)*3)
 
 	for _, v := range data {
-		args = append(args, fmt.Sprintf("('%s', %d, '%s')", v.IP.String(), v.Ping, v.LastConnection.Format("2006-01-02")))
+		args = append(args, fmt.Sprintf("('%s', %d, '%s')", v.IP.String(), v.Ping, time.Time(v.LastConnection).Format("2006-01-02")))
 	}
 
 	query := fmt.Sprintf(`

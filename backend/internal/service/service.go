@@ -26,14 +26,18 @@ func (s *Service) GetStatistics() ([]models.Container, error) {
 	const op = "service.GetStatistics"
 
 	cont, err := s.storage.GetAll()
-	return cont, fmt.Errorf("%s: %w", op, err)
+	if err != nil {
+		return cont, fmt.Errorf("%s: %w", op, err)
+	} else {
+		return cont, nil
+	}
 }
 
 func (s *Service) UpdateStatistics(data []models.Container) {
 	const op = "service.UpdateStatistics"
 
 	for i := range data {
-		data[i].LastConnection = time.Now()
+		data[i].LastConnection = models.JSONTime(time.Now())
 	}
 
 	err := s.storage.Store(data)
