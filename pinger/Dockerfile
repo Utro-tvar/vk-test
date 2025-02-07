@@ -2,9 +2,9 @@ FROM golang:alpine AS builder
 
 LABEL stage=gobuilder
 
-ENV CGO_ENABLED 0
+ENV CGO_ENABLED=0
 
-ENV GOOS linux
+ENV GOOS=linux
 
 WORKDIR /build
 
@@ -13,10 +13,10 @@ COPY ./go.sum .
 
 RUN go mod download
 
-COPY ./pinger/cmd ./cmd
-COPY ./pinger/internal ./internal
+COPY ./pinger/cmd ./pinger/cmd
+COPY ./pinger/internal ./pinger/internal
 
-RUN go build -ldflags="-s -w" -o /app/service ./cmd/main.go
+RUN go build -ldflags="-s -w" -o /app/service ./pinger/cmd/main.go
 
 FROM alpine
 
