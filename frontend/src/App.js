@@ -5,26 +5,27 @@ import Table from './components/Table';
 function App() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  let backendUrl = "test";
-  let period = 5000;
+  const [backendUrl, setBackendUrl] = useState("test"); // Добавляем состояние для backendUrl
+  const [period, setPeriod] = useState(5000);
 
   useEffect(() => {
-    console.log(process.env)
-
-    backendUrl = process.env.REACT_APP_BACKEND_URL;
-    if (!backendUrl) {
+    const url = process.env.REACT_APP_BACKEND_URL;
+    if (!url) {
       setError('Backend URL is not defined!');
     }
+    setBackendUrl(url)
 
     const periodStr = process.env.REACT_APP_PERIOD;
     if (!periodStr) {
       setError('Period is not defined!');
     }
-    period = Number(periodStr)
-    if(isNaN(period)){
-      setError(`${periodStr}`)
+    const periodNum = Number(periodStr);
+    if (isNaN(periodNum)) {
+      setError(`Invalid period value: ${periodStr}`);
+      return;
     }
+    setPeriod(periodNum);
+    
     setLoading(false)
   }, []);
 
