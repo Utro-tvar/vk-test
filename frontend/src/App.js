@@ -10,14 +10,20 @@ function App() {
   let period = 5000;
 
   useEffect(() => {
-    backendUrl = process.env.BACKEND_URL;
+    console.log(process.env)
+
+    backendUrl = process.env.REACT_APP_BACKEND_URL;
     if (!backendUrl) {
       setError('Backend URL is not defined!');
     }
 
-    period = process.env.PERIOD;
-    if (!period) {
+    const periodStr = process.env.REACT_APP_PERIOD;
+    if (!periodStr) {
       setError('Period is not defined!');
+    }
+    period = Number(periodStr)
+    if(isNaN(period)){
+      setError(`${periodStr}`)
     }
     setLoading(false)
   }, []);
