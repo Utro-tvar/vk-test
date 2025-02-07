@@ -1,24 +1,22 @@
 package scanner
 
 import (
-	"context"
 	"fmt"
 	"log/slog"
 	"net"
 
-	"github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/client"
+	docker "github.com/fsouza/go-dockerclient"
 )
 
 type Scanner struct {
-	client *client.Client
+	client *docker.Client
 	logger *slog.Logger
 }
 
 func New(logger *slog.Logger) (*Scanner, error) {
 	const op = "scanner.New"
 
-	client, err := client.NewClientWithOpts()
+	client, err := docker.NewClientFromEnv()
 	if err != nil {
 		return nil, fmt.Errorf("%s: Error while creating docker api client: %w", op, err)
 	}
@@ -28,7 +26,7 @@ func New(logger *slog.Logger) (*Scanner, error) {
 func (s *Scanner) Scan() []net.IP {
 	const op = "scanner.Scan"
 
-	containers, err := s.client.ContainerList(context.Background(), container.ListOptions{})
+	containers, err := s.client.ListContainers(docker.ListContainersOptions{})
 	if err != nil {
 		s.logger.Error(fmt.Sprintf("%s: Error while fetching containers", op), slog.Any("error", err))
 		return nil
@@ -37,7 +35,7 @@ func (s *Scanner) Scan() []net.IP {
 	ips := make([]net.IP, 0, len(containers))
 
 	for _, cont := range containers {
-		for netName, network := range cont.NetworkSettings.Networks {
+		for netName, network := range cont.Networks.Networks {
 			ip := net.ParseIP(network.IPAddress)
 			if ip == nil {
 				s.logger.Error(fmt.Sprintf("%s: Cannot parse ip: %s (network: %s, container: %s)", op, network.IPAddress, netName, cont.ID))
