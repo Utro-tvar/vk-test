@@ -17,6 +17,10 @@ type Service struct {
 	storage Storage
 }
 
+func New(logger *slog.Logger, storage Storage) *Service {
+	return &Service{logger: logger, storage: storage}
+}
+
 func (s *Service) GetStatistics() ([]models.Container, error) {
 	const op = "service.GetStatistics"
 
