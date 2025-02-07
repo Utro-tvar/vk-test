@@ -8,13 +8,13 @@ ENV GOOS linux
 
 WORKDIR /build
 
-COPY go.mod .
-COPY go.sum .
+COPY ./go.mod .
+COPY ./go.sum .
 
 RUN go mod download
 
-COPY ./cmd ./cmd
-COPY ./internal ./internal
+COPY ./backend/cmd ./cmd
+COPY ./backend/internal ./internal
 
 RUN go build -ldflags="-s -w" -o /app/service ./cmd/main.go
 
