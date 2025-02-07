@@ -1,8 +1,5 @@
 FROM node:16 AS build
 
-ARG REACT_APP_BACKEND_URL
-ENV REACT_APP_BACKEND_URL=${REACT_APP_BACKEND_URL}
-
 WORKDIR /app
 
 COPY package*.json ./
@@ -15,7 +12,12 @@ RUN npm run build
 
 FROM nginx:alpine
 
+ARG BACKEND_URL
+RUN echo 'map "" $backend_url { default "'"${BACKEND_URL}"'";}' > /etc/nginx/conf.d/env_vars.conf
+
 COPY --from=build /app/build /usr/share/nginx/html
+
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 

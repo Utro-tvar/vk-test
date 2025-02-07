@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function Table({backendUrl, period}) {
+function Table({period}) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -9,10 +9,10 @@ function Table({backendUrl, period}) {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const response = await axios.get(`${backendUrl}/read`);
+            const response = await axios.get(`/read`);
             setData(response.data);
         } catch (error) {
-            setError(`Error while fetching data from ${backendUrl}/read`);
+            setError(`Error while fetching data from backend`);
         }finally{
             setLoading(false);
         }
@@ -40,7 +40,7 @@ function Table({backendUrl, period}) {
                 <thead>
                     <tr>
                         <th>IP</th>
-                        <th>Ping</th>
+                        <th>Ping (ms)</th>
                         <th>Last connection</th>
                     </tr>
                 </thead>
