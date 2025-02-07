@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function Table(backendUrl, period = 5000) {
+function Table({backendUrl, period}) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -12,7 +12,7 @@ function Table(backendUrl, period = 5000) {
             const response = await axios.get(`${backendUrl}/read`);
             setData(response.data);
         } catch (error) {
-            setError('Error while fetching data');
+            setError(`Error while fetching data from ${backendUrl}/read`);
         }finally{
             setLoading(false);
         }
@@ -28,7 +28,7 @@ function Table(backendUrl, period = 5000) {
 
 
     if (loading) {
-        return <div className="spinner-border text-primary" role="status"><span className="sr-only">Loading...</span></div>
+        return <div className="text-primary" role="status"><span className="sr-only">Loading...</span></div>
     }
     if (error) {
         return <div className="alert alert-danger" role="alert">Error: {error}</div>;
