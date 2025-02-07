@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"log/slog"
+	"time"
 
 	"github.com/Utro-tvar/vk-test/backend/internal/models"
 )
@@ -30,6 +31,10 @@ func (s *Service) GetStatistics() ([]models.Container, error) {
 
 func (s *Service) UpdateStatistics(data []models.Container) {
 	const op = "service.UpdateStatistics"
+
+	for i := range data {
+		data[i].LastConnection = time.Now()
+	}
 
 	err := s.storage.Store(data)
 	if err != nil {
