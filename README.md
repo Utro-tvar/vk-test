@@ -43,7 +43,7 @@
    DB_NAME=service
    ```
 
-   ./frontend/.env:
+   ./frontend/.env:  
    REACT_APP_PERIOD - период обновления информации в таблице
    ```
    #in milliseconds
@@ -57,4 +57,4 @@
    ```
 
 
-frontend развернут на базе nginx и через него же отправляет запросы на backend. backend и postgres изолированы отдельной сетью, pinger используеть сеть хоста.
+frontend развернут на базе nginx и через него же отправляет запросы на backend. backend и postgres изолированы отдельной сетью, pinger использует сеть хоста.
