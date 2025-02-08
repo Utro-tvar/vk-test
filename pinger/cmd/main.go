@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"os"
 	"os/signal"
@@ -33,7 +34,7 @@ func main() {
 	}
 	logger.Info("Scanner initialized successfuly")
 
-	sender := sender.New(logger, config.BackAddress)
+	sender := sender.New(logger, fmt.Sprintf("%s:%d", config.BackAddress.String(), config.BackPort))
 	logger.Info("Sender initialized successfuly")
 
 	pinger := pinger.New(scanner, sender, logger)

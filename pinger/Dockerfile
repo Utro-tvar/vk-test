@@ -24,4 +24,4 @@ WORKDIR /app
 
 COPY --from=builder /app/service /app/service
 
-CMD ["./service"]
+CMD sleep 15 && ./service
