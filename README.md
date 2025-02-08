@@ -36,7 +36,7 @@
 
    ./backend/.env:  
    здесь должны быть указаны те же значения, что и в ./postgres/.env
-   ```
+   ```dotenv
    #database parameters
    DB_USER=service
    DB_PASS=password
@@ -45,7 +45,7 @@
 
    ./frontend/.env:  
    REACT_APP_PERIOD - период обновления информации в таблице
-   ```
+   ```dotenv
    #in milliseconds
    REACT_APP_PERIOD=50000
    ```
